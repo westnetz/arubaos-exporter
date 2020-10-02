@@ -4,8 +4,8 @@
  *
  * @author: Arjan Koopen <arjan@koopen.net>
  */
-include("common.php");
-include("config.php");
+include("../lib/common.php");
+include("../lib/config.php");
 
 if ($graphite_send) $fsock = fsockopen($graphite_ip, $graphite_port);
 
@@ -66,7 +66,7 @@ foreach ($controllers as $c_name => $ip) {
 	 * Temparature
 	 */
 	$temp = explode(" ", get_snmp("1.3.6.1.4.1.14823.2.2.1.2.1.10.0", "STRING"));
-	sendGraphite("internal_temparature", $temp[0]);
+	sendGraphite("internal_temperature", $temp[0]);
 
 	/**
 	 * BSSID to ESSID table
@@ -101,16 +101,6 @@ foreach ($controllers as $c_name => $ip) {
 
 		$_ap_name[$a_key] = sanatize_snmp("STRING", $value);
 	}
-
-	/**
-	 * AP info
-	 */
-	foreach ($_ap_name as $key => $ap_name) {
-		sendGraphite("ap.{$ap_name}.status", get_snmp("1.3.6.1.4.1.14823.2.2.1.5.2.1.4.1.19.{$key}", "INTEGER"));
-		sendGraphite("ap.{$ap_name}.num_bootstraps", get_snmp("1.3.6.1.4.1.14823.2.2.1.5.2.1.4.1.20.{$key}", "INTEGER"));
-		sendGraphite("ap.{$ap_name}.num_reboots", get_snmp("1.3.6.1.4.1.14823.2.2.1.5.2.1.4.1.20.{$key}", "INTEGER"));
-	}
-
 
 	/**
 	 * Radio Type table
@@ -209,20 +199,12 @@ foreach ($controllers as $c_name => $ip) {
 
 	}
 
-	$assoc_a = array ("assoc_essid" => "essid", "assoc_ap" => "ap", "assoc_radio" => "ap", "assoc_radio_essid" => "ap", "assoc_radio_type" => "band");
+	$assoc_a = array ("assoc_essid" => "essid");
 	foreach ($assoc_a as $type => $prefix) {
 		foreach ($$type as $key => $value) {
 			sendGraphite("assoc.{$prefix}.{$key}", $value);
 		}
 	}
-
-	$bytes_a = array ("bytes_essid" => "essid", "bytes_ap" => "ap", "bytes_radio" => "ap", "bytes_radio_essid" => "ap", "bytes_radio_type" => "band");
-        foreach ($bytes_a as $type => $prefix) {
-                foreach ($$type as $key => $value) {
-                        sendGraphite("bytes.{$prefix}.{$key}", $value);
-                }
-        }
-
 
 	/**
 	 * Radio info

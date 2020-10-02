@@ -1,14 +1,6 @@
 <?php
 function sendGraphite($field, $value) {
-        global $graphite_send, $graphite_prefix, $c_name, $fsock;
-
-        $send = $graphite_prefix . $c_name . "." . $field . " " . $value . " " . time() . "\n";
-
-        if ($graphite_send) {
-                 fwrite($fsock, $send, strlen($send));
-        }
-
-        echo $send;
+        echo "arubaos." . $field . " " . $value . "\n";
 }
 
 function get_snmp($oid, $type = "Gauge32") {
@@ -42,21 +34,4 @@ function sanatize_snmp($type, $value) {
         return $value;
 }
 
-function sshexec($shell, $command, $getoutput = true, $escape = "#") {
-        fwrite($shell, $command . PHP_EOL);
-        usleep(1500000);
-
-        $out = "";
-        if ($getoutput) {
-                while ($buf = fgets($shell)) {
-                        $out .= $buf;
-
-                        if (strpos($buf, $escape) !== false) {
-                                break;
-                        }
-                }
-        }
-
-        return $out;
-}
 ?>
