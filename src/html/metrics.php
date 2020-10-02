@@ -28,7 +28,7 @@ foreach ($controllers as $c_name => $ip) {
                 $tmp = explode(".",$key);
 		$cpu_id = $tmp[count($tmp)-1];
 
-                sendGraphite("cpu_util.cpu_{$cpu_id}", sanatize_snmp("INTEGER", $value));
+                sendGraphite("cpu_util{cpu=\"{$cpu_id}\"}", sanatize_snmp("INTEGER", $value));
         }
 
 	/**
