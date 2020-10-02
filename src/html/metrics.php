@@ -202,7 +202,7 @@ foreach ($controllers as $c_name => $ip) {
 	$assoc_a = array ("assoc_essid" => "essid");
 	foreach ($assoc_a as $type => $prefix) {
 		foreach ($$type as $key => $value) {
-			sendGraphite("assoc.{$prefix}.{$key}", $value);
+			sendGraphite("assoc{{$prefix}=\"{$key}\"}", $value);
 		}
 	}
 
@@ -243,7 +243,7 @@ foreach ($controllers as $c_name => $ip) {
 	                $ap = $_ap_name[$a_key];
                 	$radio_type = $_radio_type[$r_key];
 
-        	        sendGraphite("radio.{$ap}.{$radio_type}.{$radio_info_field}", sanatize_snmp("INTEGER", $value));
+        	        sendGraphite("radio_{$radio_info_field}{ap=\"{$ap}\",radio=\"{$radio_type}\"}", sanatize_snmp("INTEGER", $value));
 	        }
 
 

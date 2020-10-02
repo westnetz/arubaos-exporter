@@ -1,6 +1,6 @@
 <?php
 function sendGraphite($field, $value) {
-        echo "arubaos." . $field . " " . $value . "\n";
+        echo "arubaos_" . $field . " " . $value . "\n";
 }
 
 function get_snmp($oid, $type = "Gauge32") {
