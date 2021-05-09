@@ -1,4 +1,4 @@
-FROM trafex/alpine-nginx-php7:1.8.0@sha256:6e4a7576c836283a9a0b06368cc33c53663008b5868a316008fd4fb71715e034
+FROM trafex/alpine-nginx-php7:1.10.0@sha256:161c70f6aa41dab1c56b829af0ba08ac1dec7e75600a71077477bc95fef044cf
 USER root
 RUN apk --no-cache add php7-snmp
 USER nobody
